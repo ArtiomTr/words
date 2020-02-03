@@ -26,9 +26,58 @@ interface State {
 
 }
 
+class RandomWordGenerator {
+
+    private words: Word[];
+    private possibilities: number[];
+
+    public constructor(words: Word[]) {
+        this.words = words;
+        this.possibilities = words.map(
+            () =>
+                0.5
+        )
+    }
+
+    public recalcPossibilities = (val: { word: string, guessed: boolean }) => {
+        let index = 0;
+        for (let i = 0; i < this.words.length; i++) {
+            if (val.word === this.words[i].word) {
+                index = i;
+                break;
+            }
+        }
+        let tmp = this.possibilities[index];
+        this.possibilities[index] *= (val.guessed ? 0.8 : 1.2);
+        let diff = tmp - this.possibilities[index];
+        this.possibilities = this.possibilities.map((value: number, index: number) => {
+            if (index === index)
+                return value;
+            else
+                return value + (diff * (value / (this.possibilities.length * 0.5)));
+        });
+    }
+
+    public getRandom = (): Word => {
+        const rand = Math.random() * this.words.length * 0.5;
+        let cur = 0;
+        for (let i = 0; i < this.possibilities.length; i++) {
+            const possibility = this.possibilities[i];
+            if (cur < rand && cur + possibility > rand) {
+                return this.words[i];
+            }
+            cur += possibility;
+        }
+        return this.words[0];
+    }
+
+}
+
 export default class WordsTraining extends React.Component<Props, State> {
 
     private group: WordGroup | null = null;
+    private lastGroup: string = "";
+    private randomGenerator: RandomWordGenerator | null = null;
 
     public constructor(props: Props) {
         super(props);
@@ -40,30 +89,37 @@ export default class WordsTraining extends React.Component<Props, State> {
             guessWordVal: "",
             showAns: false
         }
-        const groupStr = localStorage.getItem("words_group");
-        if (groupStr)
-            this.group = JSON.parse(groupStr);
-        this.loadWords();
+        this.refreshGroup();
     }
 
-    private loadWords = async () => {
-        const words = await Axios.get("https://raw.githubusercontent.com/ArtiomTr/words/api/words/" + this.group?.filename);
+    private refreshGroup = () => {
+        const groupStr = localStorage.getItem("words_group");
+        if (groupStr && groupStr !== this.lastGroup) {
+            this.lastGroup = groupStr;
+            this.group = JSON.parse(groupStr);
+            this.loadWords(this.group!.filename);
+        }
 
+    }
+
+    private loadWords = async (filename: string) => {
+        const words = await Axios.get(`https://raw.githubusercontent.com/ArtiomTr/words/api/words/${filename}`);
+        this.randomGenerator = new RandomWordGenerator(words.data);
         this.setState({ words: words.data, loaded: true });
     }
 
     private pickWord = () => {
-        const { words } = this.state;
         this.setState({
-            currentWord: words[Math.floor(Math.random() * words.length)],
+            currentWord: this.randomGenerator?.getRandom() ?? null,
             showAns: false,
             guessWordVal: ""
-        })
+        }, () => console.log(this.state.currentWord?.word));
     }
 
     public render(): React.ReactNode {
         const { show } = this.props;
         const { currentWord, loaded, started, guessWordVal, showAns } = this.state;
+        this.refreshGroup();
         return (
             <div className={classNames("app-box", { "app-box-show": show })}>
                 <div className="app-box-container">
@@ -73,8 +129,11 @@ export default class WordsTraining extends React.Component<Props, State> {
                                 marginRight: 10
                             }}
                             color="inherit"
-                            onClick={() =>
-                                window.location.href = window.location.href.substring(0, window.location.href.indexOf("/#/") + 3)}
+                            onClick={() => {
+                                this.setState({ started: false });
+                                window.location.href = window.location.href.substring(0, window.location.href.indexOf("/#/") + 3)
+
+                            }}
                         >
                             <Icon color="inherit">arrow_back</Icon>
                         </IconButton>
@@ -86,7 +145,9 @@ export default class WordsTraining extends React.Component<Props, State> {
                                 onSubmit={(e) => {
                                     e.preventDefault();
                                     if (!showAns) {
-                                        this.setState({ showAns: guessWordVal.trim().toLowerCase() === currentWord.word.trim().toLowerCase() ? "correct" : "incorrect" });
+                                        const guessed = guessWordVal.trim().toLowerCase() === currentWord.word.trim().toLowerCase();
+                                        this.randomGenerator?.recalcPossibilities({ word: currentWord.word, guessed })
+                                        this.setState({ showAns: guessed ? "correct" : "incorrect" });
                                     } else {
                                         this.pickWord();
                                     }
