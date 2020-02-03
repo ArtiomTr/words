@@ -3,6 +3,7 @@ import { Typography, Paper, List, ListItem, ListItemText, CircularProgress } fro
 import axios from 'axios'
 
 interface Props {
+    show: boolean;
 }
 
 export interface WordGroup {
@@ -35,10 +36,10 @@ export default class GroupPickerPage extends React.Component<Props, State> {
     public render(): React.ReactNode {
         const { wordGroups, loaded } = this.state;
         return (
-            <Paper className="app-box" elevation={3}>
-                <Typography variant="h4">Choose words group</Typography>
+            <div className="group-picker">
+                <Typography color="inherit" variant="h4" className="group-picker__header">Pick words group</Typography>
                 {loaded ?
-                    <List>
+                    <List className="group-picker__list">
                         {wordGroups.map((value: WordGroup) =>
                             <ListItem
                                 key={value.filename}
@@ -48,12 +49,12 @@ export default class GroupPickerPage extends React.Component<Props, State> {
                                     window.location.href = window.location.href + "words";
                                 }}
                             >
-                                <ListItemText primary={value.name} secondary={value.description} />
+                                <ListItemText primary={value.name} />
                             </ListItem>)}
                     </List>
                     : <CircularProgress variant="indeterminate" />
                 }
-            </Paper>
+            </div>
 
         );
     }
