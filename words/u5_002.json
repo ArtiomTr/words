@@ -1,6 +1,7 @@
 [
     {
         "word": "as far as I know",
+        "type": "IDIOM",
         "definition": "used to say that you think you know, remember, understand, etc. sth but you cannot be completely sure, especially because you do not know all the facts"
     },
     {
@@ -32,12 +33,12 @@
     {
         "word": "by the way",
         "definition": "used to introduce a comment or question that is not directly related to what you have been talking about",
-        "type": "I"
+        "type": "IDIOM"
     },
     {
         "word": "bye for now",
         "definition": "used to express good wishes when parting or at the end of conversation",
-        "type": "I"
+        "type": "IDIOM"
     },
     {
         "word": "chilling",
