@@ -1,1 +1,117 @@
-[{"word":"abuse","definition":"rude and offensive remarks"},{"word":"as far as I know","definition":"used to say that you think you know, remember, understand, etc. sth but you cannot be completely sure, especially because you do not know all the facts"}]
+[
+    {
+        "word": "as far as I know",
+        "definition": "used to say that you think you know, remember, understand, etc. sth but you cannot be completely sure, especially because you do not know all the facts"
+    },
+    {
+        "word": "abuse",
+        "definition": "rude and offensive remarks",
+        "type": "N",
+        "pronunciation": "/əˈbjuːs/"
+    },
+    {
+        "word": "as soon as possible",
+        "definition": "as quickly, much, soon, etc. as you can",
+        "type": "IDIOM"
+    },
+    {
+        "word": "at some point",
+        "definition": "a non-specific time in the future",
+        "type": "IDIOM"
+    },
+    {
+        "word": "back cover",
+        "definition": "the back part of the cover of a book or magazine",
+        "type": "N"
+    },
+    {
+        "word": "bibliography",
+        "definition": "a list of books, etc. that have been used by sb writing an article, etc.",
+        "type": "N"
+    },
+    {
+        "word": "by the way",
+        "definition": "used to introduce a comment or question that is not directly related to what you have been talking about",
+        "type": "I"
+    },
+    {
+        "word": "bye for now",
+        "definition": "used to express good wishes when parting or at the end of conversation",
+        "type": "I"
+    },
+    {
+        "word": "chilling",
+        "definition": "frightening, usually because it is connected with something violent or cruel",
+        "type": "ADJ"
+    },
+    {
+        "word": "complex",
+        "definition": "made of many different things or parts that are connected; difficult to understand",
+        "type": "ADJ",
+        "pronunciation": "/ˈkɒmpleks/"
+    },
+    {
+        "word": "contents page",
+        "definition": "a list of the different sections that are contained in a book",
+        "type": "N"
+    },
+    {
+        "word": "dust jacket",
+        "definition": "a paper cover on a book that protects it but that can be removed",
+        "type": "N"
+    },
+    {
+        "word": "empower",
+        "definition": "to give somebody the power or authority to do something",
+        "type": "V",
+        "pronunciation": "/ɪmˈpaʊə(r)/"
+    },
+    {
+        "word": "enable",
+        "definition": "to make it possible for somebody/something to do something",
+        "type": "V",
+        "pronunciation": "/ɪˈneɪbl/"
+    },
+    {
+        "word": "enclose",
+        "definition": "to build a wall, fence, etc. around something",
+        "type": "V",
+        "pronunciation": "/ɪnˈkləʊz/"
+    },
+    {
+        "word": "encourage",
+        "definition": "to give sb support, courage or hope",
+        "type": "V",
+        "pronunciation": "/ɪnˈkʌrɪdʒ/"
+    },
+    {
+        "word": "enlarge",
+        "definition": "to make something bigger; to become bigger",
+        "type": "V",
+        "pronunciation": "/ɪnˈlɑːdʒ/"
+    },
+    {
+        "word": "ensure",
+        "definition": "to make sure that something happens or is definite",
+        "type": "V",
+        "pronunciation": "/ɪnˈʃʊə(r)/"
+    },
+    {
+        "word": "entitle",
+        "definition": "to give somebody the right to have or to do something",
+        "type": "V",
+        "pronunciation": "/ɪnˈtaɪtl/"
+    },
+    {
+        "word": "entrust",
+        "definition": "to make somebody responsible for doing something or taking care of somebody",
+        "type": "V",
+        "pronunciation": "/ɪnˈtrʌst/"
+    },
+    {
+        "word": "expressive",
+        "definition": "showing or able to show your thoughts and feelings",
+        "type": "ADJ",
+        "pronunciation": "/ɪkˈspresɪv/"
+    }
+]
