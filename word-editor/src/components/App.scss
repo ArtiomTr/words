@@ -1,0 +1,46 @@
+$app-panel-height: 60px;
+$app-background-color: #fff;
+$app-panel-item-highlight: rgba(0,0,0,0.2);
+$transition-curve: cubic-bezier(0.4, 0.0, 0.2, 1);
+
+.app {
+
+    width: 100vw;
+    height: 100vh;
+    background-color: $app-background-color;
+
+    &-panel {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: $app-panel-height;
+        border: 1px rgba(0,0,0,0.3) solid;
+        border-width: 0 0 1px 0;
+
+        &__action {
+
+            width: $app-panel-height*1.3;
+            height: $app-panel-height;
+            flex-direction: column;
+            transition: background 150ms $transition-curve;
+            
+            &:hover {
+                background-color: $app-panel-item-highlight;
+            }
+
+            // &-name {
+            // }
+
+        }
+    }
+
+    &-content {
+        position: fixed;
+        top: $app-panel-height;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
+
+}
