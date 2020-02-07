@@ -13,7 +13,7 @@ export default class ActionComponent extends React.Component<ActionProps> {
     public render(): React.ReactNode {
         const { name, icon } = this.props;
         return (
-            <ButtonBase className="app-panel__action">
+            <ButtonBase className="app-actions__action">
                 <Icon>{icon}</Icon>
                 <Typography className="app-panel__action-name">{name}</Typography>
             </ButtonBase>

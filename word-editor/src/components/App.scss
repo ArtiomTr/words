@@ -2,6 +2,7 @@ $app-panel-height: 60px;
 $app-background-color: #fff;
 $app-panel-item-highlight: rgba(0,0,0,0.2);
 $transition-curve: cubic-bezier(0.4, 0.0, 0.2, 1);
+$group-panel-width: 200px;
 
 .app {
 
@@ -9,7 +10,7 @@ $transition-curve: cubic-bezier(0.4, 0.0, 0.2, 1);
     height: 100vh;
     background-color: $app-background-color;
 
-    &-panel {
+    &-actions {
         position: fixed;
         top: 0;
         left: 0;
@@ -41,6 +42,25 @@ $transition-curve: cubic-bezier(0.4, 0.0, 0.2, 1);
         bottom: 0;
         left: 0;
         right: 0;
+        .group-list {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            width: $group-panel-width;
+            border: 1px rgba(0,0,0,0.3) solid;
+            border-width: 0 1px 0 0;
+        }
     }
 
+}
+
+.not-opened {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: rgba(0,0,0,0.15);
+    user-select: none;
 }
