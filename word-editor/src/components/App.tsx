@@ -1,5 +1,5 @@
 import React from 'react'
-import { ThemeProvider, Theme } from "@material-ui/core"
+import { ThemeProvider, Theme, Paper } from "@material-ui/core"
 import { ActionProps } from './common/ActionComponent';
 import ActionPanel from './panels/ActionsPanel';
 import './App.scss'
@@ -7,6 +7,8 @@ import MainContentPanel from './panels/MainContentPanel';
 import { TempDataManager } from '../utils/TempData';
 import { WordGroupDataManager } from '../utils/WordGroup';
 import GroupsListPanel from './panels/GroupsListPanel';
+import WordsListPanel from './panels/WordsListPanel';
+import ActionButton from './common/ActionButton';
 
 export interface AppConfig {
 
@@ -45,6 +47,12 @@ export default class App extends React.Component<Props, State> {
         }
     }
 
+    public selectWordsGroup = (wordsGroupIndex: number) => {
+        const { wordGroups } = this.state;
+        wordGroups?.loadWords(wordsGroupIndex);
+        this.setState({ selectedWordGroup: wordsGroupIndex });
+    }
+
     public render(): React.ReactNode {
         const {
             actions,
@@ -65,6 +73,11 @@ export default class App extends React.Component<Props, State> {
                         <GroupsListPanel
                             selected={selectedWordGroup}
                             groups={wordGroups?.getData().map((value) => value.info) ?? []}
+                            selectWordGroup={this.selectWordsGroup}
+                        />
+
+                        <WordsListPanel
+                            wordGroup={wordGroups?.getData()[selectedWordGroup]}
                         />
 
                     </MainContentPanel>

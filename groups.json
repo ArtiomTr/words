@@ -1,12 +1,1 @@
-[
-    {
-        "filename": "u5_001.json",
-        "name": "Phrasal verbs",
-        "description": "Phrasal verbs from WB unit 5"
-    },
-    {
-        "filename": "u5_002.json",
-        "name": "Words unit 5",
-        "description": "Words from ''"
-    }
-]
+[{"filename":"u5_001.json","name":"Phrasal verbs","description":"Phrasal verbs from WB unit 5"},{"filename":"u5_002.json","name":"Words unit 5","description":"Words from ''"}]

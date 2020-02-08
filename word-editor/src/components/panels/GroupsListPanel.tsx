@@ -5,12 +5,13 @@ import { WordGroupInfo } from '../../utils/WordGroup';
 interface Props {
     groups: WordGroupInfo[];
     selected: number;
+    selectWordGroup: (index: number) => void;
 }
 
 export default class GroupsListPanel extends React.Component<Props> {
 
     public render(): React.ReactNode {
-        const { groups, selected } = this.props;
+        const { groups, selected, selectWordGroup } = this.props;
         return (
             <div className="group-list">
                 <List
@@ -23,6 +24,7 @@ export default class GroupsListPanel extends React.Component<Props> {
                             dense
                             key={index}
                             selected={index === selected}
+                            onClick={() => selectWordGroup(index)}
                         >
                             <ListItemText
                                 primary={value.name}

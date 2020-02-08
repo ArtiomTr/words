@@ -1,6 +1,6 @@
 import FileDataManager, { FileData } from "./FileDataManager";
 
-const fs = require('fs');
+const fs = window.require('fs');
 
 export interface WordGroupInfo {
 
@@ -10,7 +10,7 @@ export interface WordGroupInfo {
 
 }
 
-interface WordGroup {
+export interface WordGroup {
 
     info: WordGroupInfo;
     words: Word[];
@@ -18,7 +18,7 @@ interface WordGroup {
 
 }
 
-interface Word {
+export interface Word {
 
     word: string;
     definition: string;
@@ -95,8 +95,9 @@ export class WordGroupDataManager extends FileDataManager<WordGroup[]> {
 
     public loadWords = (wordGroupIndex: number): void => {
         let data = this.getData();
-        if (wordGroupIndex > 0 && wordGroupIndex < data.length) {
-            data[wordGroupIndex].words = JSON.parse(fs.readFile(`${this.getPath()}/words/${data[wordGroupIndex].info.filename}`));
+        if (wordGroupIndex >= 0 && wordGroupIndex < data.length && !data[wordGroupIndex].loaded) {
+            data[wordGroupIndex].words = JSON.parse(fs.readFileSync(`${this.getPath()}/../words/${data[wordGroupIndex].info.filename}`));
+            console.log(data[wordGroupIndex].words);
             data[wordGroupIndex].loaded = true;
             this.setData(data);
         }

@@ -1,5 +1,5 @@
 import React from 'react'
-import { NotOpened } from '../common/NotOpened';
+import { FullscreenMessage } from '../common/FullscreenMessage';
 
 export default class MainContentPanel extends React.Component<{ opened: boolean }> {
 
@@ -7,7 +7,7 @@ export default class MainContentPanel extends React.Component<{ opened: boolean 
         const { children, opened } = this.props;
         return (
             <div className="app-content">
-                {opened ? children : <NotOpened />}
+                {opened ? children : <FullscreenMessage message="Not opened file ¯\_(ツ)_/¯" />}
             </div>
         );
     }

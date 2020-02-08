@@ -2,7 +2,8 @@ $app-panel-height: 60px;
 $app-background-color: #fff;
 $app-panel-item-highlight: rgba(0,0,0,0.2);
 $transition-curve: cubic-bezier(0.4, 0.0, 0.2, 1);
-$group-panel-width: 200px;
+$group-panel-width: 250px;
+$primary-color: #3F51B5;
 
 .app {
 
@@ -50,12 +51,95 @@ $group-panel-width: 200px;
             width: $group-panel-width;
             border: 1px rgba(0,0,0,0.3) solid;
             border-width: 0 1px 0 0;
+            overflow-y: auto;
+        }
+        .word-list {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: $group-panel-width;
+            right: 0;
+            overflow-y: auto;
+            &__title {
+                padding: 20px;
+                &-path {
+                    color: rgba(0,0,0,.6);
+                }
+            }
         }
     }
 
 }
 
-.not-opened {
+.overlay {
+    background-color: rgba(0,0,0,0.4);
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 300ms $transition-curve;
+    &.active {
+        opacity: 1;
+        pointer-events: all;
+    }
+}
+
+.fab-shadow {
+    position: fixed;
+    bottom: 36px;
+    right: 36px;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    box-shadow: 0px 3px 3px -2px rgba(0,0,0,0.2), 0px 3px 4px 0px rgba(0,0,0,0.14), 0px 1px 8px 0px rgba(0,0,0,0.12);
+}
+
+.fab {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 350px;
+    height: 400px;
+    z-index: 9;
+    background-color: $primary-color;
+    clip-path: circle(24px at 320px 370px);
+    box-shadow: 0px 3px 3px -2px rgba(0,0,0,0.2), 0px 3px 4px 0px rgba(0,0,0,0.14), 0px 1px 8px 0px rgba(0,0,0,0.12);
+    transition: clip-path 400ms $transition-curve, background 500ms $transition-curve;
+    color: #fff;
+    .fab-header {
+        color: rgba(0, 0, 0, 0.54);
+        display: flex;
+        align-items: center;
+        margin: 10px 5px;
+        user-select: none;
+        justify-content: space-between;
+    }
+    .fab-content {
+        padding: 0 35px;
+    }
+    &__open {
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+        opacity: 1;
+        transform: rotate(0deg);
+        transition: opacity 350ms $transition-curve, transform 350ms $transition-curve;
+    }
+    &.active {
+        clip-path: circle(340px at 200px 250px);
+        background-color: #FFF;
+        .fab__open {
+            opacity: 0;
+            transform: rotate(180deg);
+            pointer-events: none;
+        }
+    }
+}
+
+.fs-message {
     width: 100%;
     height: 100%;
     display: flex;
@@ -63,4 +147,7 @@ $group-panel-width: 200px;
     align-items: center;
     color: rgba(0,0,0,0.15);
     user-select: none;
+    &__text {
+        max-width: 80%;
+    }
 }
