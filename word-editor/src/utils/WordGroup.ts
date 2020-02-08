@@ -97,7 +97,6 @@ export class WordGroupDataManager extends FileDataManager<WordGroup[]> {
         let data = this.getData();
         if (wordGroupIndex >= 0 && wordGroupIndex < data.length && !data[wordGroupIndex].loaded) {
             data[wordGroupIndex].words = JSON.parse(fs.readFileSync(`${this.getPath()}/../words/${data[wordGroupIndex].info.filename}`));
-            console.log(data[wordGroupIndex].words);
             data[wordGroupIndex].loaded = true;
             this.setData(data);
         }

@@ -3,6 +3,7 @@ import { Word, WordGroup } from '../../utils/WordGroup';
 import { List, ListItem, ListItemText, ListItemIcon, IconButton, Icon, ListItemSecondaryAction, Typography } from '@material-ui/core';
 import { FullscreenMessage } from '../common/FullscreenMessage';
 import ActionButton from '../common/ActionButton';
+import { WordTypeComponent } from '../common/WortTypeComponent';
 
 interface Props {
     wordGroup?: WordGroup;
@@ -58,12 +59,14 @@ export default class WordsListPanel extends React.Component<Props, State> {
                                     dense
                                     key={index}
                                     button
-                                    style={{ width: "95%" }}
+                                    style={{ paddingRight: "75px" }}
                                 >
                                     <ListItemText
-                                        primary={value.word}
                                         secondary={value.definition}
-                                    />
+                                    >
+                                        {value.word}
+                                        <WordTypeComponent type={value.type} />
+                                    </ListItemText>
                                     <ListItemSecondaryAction>
                                         <IconButton style={{ marginRight: 5 }} size="small" edge="end">
                                             <Icon fontSize="small">edit</Icon>

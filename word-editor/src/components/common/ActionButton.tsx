@@ -2,7 +2,7 @@ import React from 'react'
 import classNames from 'classnames'
 import { IconButton, Icon, Typography, TextField, Select, FormControl, InputLabel, MenuItem } from '@material-ui/core';
 import { Formik, Form, Field, FieldProps } from 'formik'
-import { wordTypes, type2wordAlias } from '../../utils/WordTypes';
+import { wordTypes, type2wordAlias, typeColorAlias } from '../../utils/WordTypes';
 import * as yup from 'yup'
 
 interface Props {
@@ -49,7 +49,7 @@ export default class ActionButton extends React.Component<Props, State> {
                 onSubmit={(values) => {
                     console.log(values);
                 }}>
-                {({ values, setFieldValue, resetForm }) =>
+                {({ values, setFieldValue, setFieldTouched, resetForm, errors, touched }) =>
                     <>
                         <div onClick={() => { resetForm(); close(); }} className={classNames("overlay", { active })}></div>
                         <div className="fab-shadow"></div>
@@ -78,10 +78,42 @@ export default class ActionButton extends React.Component<Props, State> {
                                             <TextField {...field} error={form.touched[field.name] !== undefined && form.errors[field.name] !== undefined} label="Pronunciation" variant="outlined" fullWidth={true} margin="dense" />
                                     }</Field>
                                     <FormControl margin="dense" fullWidth={true} variant="outlined">
-                                        <InputLabel ref={this.inputLabelRef} id="word-type-label">Word type</InputLabel>
-                                        <Select onChange={(e: React.ChangeEvent<{ value: unknown }>) => setFieldValue("type", e.target.value)} value={values.type} labelWidth={labelWidth} labelId="word-type-label" fullWidth={true}>
+                                        <InputLabel error={touched.type && errors.type !== undefined} ref={this.inputLabelRef} id="word-type-label">Word type</InputLabel>
+                                        <Select
+                                            onBlur={() => setFieldTouched("type")}
+                                            error={touched.type && errors.type !== undefined}
+                                            onChange={(e: React.ChangeEvent<{ value: unknown }>) => setFieldValue("type", e.target.value)}
+                                            value={values.type}
+                                            labelWidth={labelWidth}
+                                            labelId="word-type-label"
+                                            fullWidth={true}
+                                            renderValue={(value: unknown) =>
+                                                <div className="word-type-value">
+                                                    <span
+                                                        className="word-type-value__color"
+                                                        style={{
+                                                            backgroundColor: (typeColorAlias as any)[value as string] ?? typeColorAlias.UNKNWN
+                                                        }}
+                                                    ></span>
+                                                    <span
+                                                        className="word-type-value__text"
+                                                    >{(type2wordAlias as any)[value as string] ?? type2wordAlias.UNKNWN}</span>
+                                                </div>}
+                                        >
                                             {wordTypes.map((value: string) =>
-                                                <MenuItem key={value} value={value}>{(type2wordAlias as any)[value]}</MenuItem>)}
+                                                <MenuItem key={value} value={value}>
+                                                    {<div className="word-type-value">
+                                                        <span
+                                                            className="word-type-value__color"
+                                                            style={{
+                                                                backgroundColor: (typeColorAlias as any)[value] ?? typeColorAlias.UNKNWN
+                                                            }}
+                                                        ></span>
+                                                        <span
+                                                            className="word-type-value__text"
+                                                        >{(type2wordAlias as any)[value] ?? type2wordAlias.UNKNWN}</span>
+                                                    </div>}
+                                                </MenuItem>)}
                                         </Select>
                                     </FormControl>
                                 </div>

@@ -24,3 +24,12 @@ export const type2wordAlias = {
     "IDIOM": "Idiom",
     "UNKNWN": "Unknown"
 }
+
+export const typeColorAlias = {
+    "PHR_V": "#aa00ff",
+    "N": "#0091ea",
+    "V": "#00bfa5",
+    "ADJ": "#ffab00",
+    "IDIOM": "#c51162",
+    "UNKNWN": "#dd2c00"
+}

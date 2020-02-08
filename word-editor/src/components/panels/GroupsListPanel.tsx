@@ -1,5 +1,5 @@
 import React from 'react'
-import { List, ListItem, ListItemText } from '@material-ui/core'
+import { List, ListItem, ListItemText, ListItemSecondaryAction, IconButton, Icon } from '@material-ui/core'
 import { WordGroupInfo } from '../../utils/WordGroup';
 
 interface Props {
@@ -30,6 +30,11 @@ export default class GroupsListPanel extends React.Component<Props> {
                                 primary={value.name}
                                 secondary={value.filename}
                             />
+                            <ListItemSecondaryAction>
+                                <IconButton size="small">
+                                    <Icon fontSize="small">delete</Icon>
+                                </IconButton>
+                            </ListItemSecondaryAction>
                         </ListItem>)}
                 </List>
             </div>

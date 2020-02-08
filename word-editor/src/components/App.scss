@@ -139,6 +139,26 @@ $primary-color: #3F51B5;
     }
 }
 
+.word-type-value {
+    display: flex;
+    align-items: center;
+    &__color {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        margin-right: 5px;
+    }
+}
+
+.word-type {
+    color: #FFF;
+    padding: 3px;
+    text-transform: lowercase;
+    border-radius: 3px;
+    margin-left: 5px;
+    font-size: 0.75rem;
+}
+
 .fs-message {
     width: 100%;
     height: 100%;
