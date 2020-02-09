@@ -102,4 +102,26 @@ export class WordGroupDataManager extends FileDataManager<WordGroup[]> {
         }
     }
 
+    public createNewGroup = (info: WordGroupInfo): void => {
+        let data = this.getData();
+        if (!data.every((value: WordGroup) => value.info.filename !== info.filename))
+            throw new Error(`File with name "${info.filename}" already exists`);
+        fs.writeFileSync(`${this.getPath()}/../words/${info.filename}`, JSON.stringify([]));
+        data.push({
+            info,
+            words: [],
+            loaded: false
+        });
+        this.setData(data);
+    }
+
+    public deleteGroup = (index: number): void => {
+        let data = this.getData();
+        if (index > 0 && index < data.length) {
+            const group = data.splice(index, 1)[0];
+            fs.unlinkSync(`${this.getPath()}/../words/${group.info.filename}`);
+            this.setData(data);
+        }
+    }
+
 }

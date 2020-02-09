@@ -1,14 +1,14 @@
 import React from 'react'
-import { ThemeProvider, Theme, Dialog, DialogTitle, DialogContent, DialogActions, Button, Typography, IconButton, Icon, TextField } from "@material-ui/core"
+import { ThemeProvider, Theme, Dialog, DialogTitle, DialogContent, DialogActions, Button, Typography, IconButton, Icon } from "@material-ui/core"
 import ActionPanel from './panels/ActionsPanel';
 import './App.scss'
 import MainContentPanel from './panels/MainContentPanel';
 import { TempDataManager } from '../utils/TempData';
-import { WordGroupDataManager, WordGroup, WordGroupInfo } from '../utils/WordGroup';
+import { WordGroupDataManager, WordGroupInfo } from '../utils/WordGroup';
 import GroupsListPanel from './panels/GroupsListPanel';
 import WordsListPanel from './panels/WordsListPanel';
-import { Formik, Field, FieldProps, Form } from 'formik';
-import * as yup from "yup"
+import { Form } from 'formik';
+import NewGroupForm from './forms/NewGroupForm';
 
 interface ActionData {
 
@@ -73,27 +73,15 @@ export default class App extends React.Component<Props, State> {
     }
 
     private deleteGroup = (index: number) => {
-        let { wordGroups } = this.state;
-        let data = wordGroups?.getData();
-        if (data) {
-            data.splice(index, 1);
-            wordGroups?.setData(data);
-            this.setState({ wordGroups });
-        }
+        const { wordGroups } = this.state;
+        wordGroups?.deleteGroup(index);
+        this.forceUpdate();
     }
 
     private createGroup = (group: WordGroupInfo) => {
-        let { wordGroups } = this.state;
-        let data = wordGroups?.getData();
-        if (data) {
-            data.push({
-                info: group,
-                words: [],
-                loaded: false
-            });
-            wordGroups?.setData(data);
-            this.setState({ wordGroups });
-        }
+        const { wordGroups } = this.state;
+        wordGroups?.createNewGroup(group);
+        this.setState({ selectedWordGroup: -1 });
     }
 
     private getActionByString = (action: string) => {
@@ -169,23 +157,13 @@ export default class App extends React.Component<Props, State> {
                     </Dialog>
 
                     <Dialog fullWidth maxWidth="xs" open={shownPopup === "groupCreate"} onClose={() => this.changePopup("none")}>
-                        <Formik
-                            initialValues={{
-                                filename: "",
-                                name: "",
-                                description: ""
-                            }}
-                            validationSchema={yup.object().shape({
-                                filename: yup.string().required(),
-                                name: yup.string().required(),
-                                description: yup.string().required()
-                            })}
-                            onSubmit={(values, actions) => {
+                        <NewGroupForm
+                            onSubmit={(values: WordGroupInfo) => {
                                 this.createGroup(values);
-                                actions.resetForm();
                                 this.changePopup("none");
-                            }}>
-                            {({ resetForm }) =>
+                            }}
+                        >
+                            {(form) =>
                                 <>
                                     <DialogTitle disableTypography className="popup-title">
                                         <Typography variant="h6">Create new group</Typography>
@@ -203,18 +181,7 @@ export default class App extends React.Component<Props, State> {
                                         </IconButton>
                                     </DialogTitle>
                                     <DialogContent dividers>
-                                        <Field name="name">{
-                                            ({ field, form }: FieldProps) =>
-                                                <TextField {...field} error={form.touched[field.name] !== undefined && form.errors[field.name] !== undefined} label="Group name" variant="outlined" fullWidth={true} margin="dense" />
-                                        }</Field>
-                                        <Field name="description">{
-                                            ({ field, form }: FieldProps) =>
-                                                <TextField {...field} error={form.touched[field.name] !== undefined && form.errors[field.name] !== undefined} label="Description" variant="outlined" fullWidth={true} margin="dense" multiline={true} rows={4} />
-                                        }</Field>
-                                        <Field name="filename">{
-                                            ({ field, form }: FieldProps) =>
-                                                <TextField {...field} error={form.touched[field.name] !== undefined && form.errors[field.name] !== undefined} label="Filename" variant="outlined" fullWidth={true} margin="dense" />
-                                        }</Field>
+                                        {form}
                                     </DialogContent>
                                     <DialogActions>
                                         <Form>
@@ -228,7 +195,7 @@ export default class App extends React.Component<Props, State> {
                                     </DialogActions>
                                 </>
                             }
-                        </Formik>
+                        </NewGroupForm>
                     </Dialog>
                 </div>
             </ThemeProvider>

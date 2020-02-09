@@ -1,0 +1,18 @@
+$error-color: #B00020;
+
+.error-message {
+
+    color: $error-color;
+    border: 1px solid $error-color;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 10px;
+
+    .error-message__text {
+        margin-left: 5px;
+        user-select: none;
+    }
+
+}
