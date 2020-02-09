@@ -6,12 +6,13 @@ interface Props {
     groups: WordGroupInfo[];
     selected: number;
     selectWordGroup: (index: number) => void;
+    changePopup: (popup: "none" | "groupDelete" | "wordEdit" | "wordDelete", data: any) => void;
 }
 
 export default class GroupsListPanel extends React.Component<Props> {
 
     public render(): React.ReactNode {
-        const { groups, selected, selectWordGroup } = this.props;
+        const { groups, selected, selectWordGroup, changePopup } = this.props;
         return (
             <div className="group-list">
                 <List
@@ -31,7 +32,7 @@ export default class GroupsListPanel extends React.Component<Props> {
                                 secondary={value.filename}
                             />
                             <ListItemSecondaryAction>
-                                <IconButton size="small">
+                                <IconButton onClick={() => changePopup("groupDelete", { groupName: value.name, groupId: index })} size="small">
                                     <Icon fontSize="small">delete</Icon>
                                 </IconButton>
                             </ListItemSecondaryAction>

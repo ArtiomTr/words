@@ -41,7 +41,7 @@ export default class ActionButton extends React.Component<Props, State> {
                     pronunciation: "",
                     type: ""
                 }}
-                validationSchema={yup.object({
+                validationSchema={yup.object().shape({
                     word: yup.string().required(),
                     definition: yup.string().required(),
                     type: yup.string().required().oneOf(wordTypes)

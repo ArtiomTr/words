@@ -150,6 +150,12 @@ $primary-color: #3F51B5;
     }
 }
 
+.popup-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .word-type {
     color: #FFF;
     padding: 3px;

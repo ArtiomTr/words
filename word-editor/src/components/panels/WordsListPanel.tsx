@@ -1,6 +1,6 @@
 import React from 'react'
 import { Word, WordGroup } from '../../utils/WordGroup';
-import { List, ListItem, ListItemText, ListItemIcon, IconButton, Icon, ListItemSecondaryAction, Typography } from '@material-ui/core';
+import { List, ListItem, ListItemText, IconButton, Icon, ListItemSecondaryAction, Typography } from '@material-ui/core';
 import { FullscreenMessage } from '../common/FullscreenMessage';
 import ActionButton from '../common/ActionButton';
 import { WordTypeComponent } from '../common/WortTypeComponent';

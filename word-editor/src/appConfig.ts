@@ -1,5 +1,5 @@
 import { AppConfig } from "./components/App";
-import { createMuiTheme } from "@material-ui/core";
+import { createMuiTheme, createStyles } from "@material-ui/core";
 
 const config: AppConfig = {
 
@@ -8,6 +8,13 @@ const config: AppConfig = {
             body1: {
                 fontSize: "0.87rem"
             }
+        },
+        overrides: {
+            MuiDialogTitle: createStyles({
+                root: {
+                    padding: 16
+                }
+            })
         },
         palette: {
             primary: {
@@ -35,11 +42,13 @@ const config: AppConfig = {
     actions: [
         {
             name: "Open",
-            icon: "folder_open"
+            icon: "folder_open",
+            action: ""
         },
         {
             name: "Add group",
-            icon: "add"
+            icon: "add",
+            action: "new_group"
         }
     ]
 
