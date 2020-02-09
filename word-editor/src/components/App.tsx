@@ -9,6 +9,8 @@ import GroupsListPanel from './panels/GroupsListPanel';
 import WordsListPanel from './panels/WordsListPanel';
 import NewGroupPopup from './popups/NewGroupPopup';
 import GroupDeletePopup from './popups/GroupDeletePopup';
+import WordDeletePopup from './popups/WordDeletePopup';
+import WordEditPopup from './popups/WordEditPopup';
 
 interface ActionData {
 
@@ -96,6 +98,12 @@ export default class App extends React.Component<Props, State> {
         this.forceUpdate();
     }
 
+    private editWord = (word: Word, index: number) => {
+        const { wordGroups, selectedWordGroup } = this.state;
+        wordGroups?.editWord(word, selectedWordGroup, index);
+        this.forceUpdate();
+    }
+
     private getActionByString = (action: string) => {
         switch (action) {
             case "new_group":
@@ -134,7 +142,8 @@ export default class App extends React.Component<Props, State> {
                         <WordsListPanel
                             wordGroup={wordGroups?.getData()[selectedWordGroup]}
                             createWord={this.createWord}
-                            deleteWord={this.deleteWord}
+                            showWordEditPopup={(wordData: Word, wordId: number) => this.changePopup("wordEdit", { wordData, wordId })}
+                            showWordDeletionPopup={(word: string, wordId: number) => this.changePopup("wordDelete", { word, wordId })}
                         />
                     </MainContentPanel>
 
@@ -145,11 +154,26 @@ export default class App extends React.Component<Props, State> {
                         deleteGroup={this.deleteGroup}
                     />
 
+                    <WordDeletePopup
+                        isOpened={shownPopup === "wordDelete"}
+                        close={() => this.changePopup("none")}
+                        popupData={popupData}
+                        deleteWord={this.deleteWord}
+                    />
+
                     <NewGroupPopup
                         isOpened={shownPopup === "groupCreate"}
                         close={() => this.changePopup("none")}
                         createGroup={this.createGroup}
                     />
+
+                    <WordEditPopup
+                        isOpened={shownPopup === "wordEdit"}
+                        close={() => this.changePopup("none")}
+                        editWord={this.editWord}
+                        popupData={popupData}
+                    />
+
                 </div>
             </ThemeProvider>
         );
