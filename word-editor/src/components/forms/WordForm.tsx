@@ -108,6 +108,8 @@ export default class WordForm extends React.Component<Props, State> {
                 })}
                 onSubmit={(values, actions) => {
                     onSubmit(values);
+                    actions.resetForm();
+                    actions.setSubmitting(false);
                 }}
             >
                 {(actions) => {

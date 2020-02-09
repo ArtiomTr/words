@@ -117,10 +117,45 @@ export class WordGroupDataManager extends FileDataManager<WordGroup[]> {
 
     public deleteGroup = (index: number): void => {
         let data = this.getData();
-        if (index > 0 && index < data.length) {
+        if (index >= 0 && index < data.length) {
             const group = data.splice(index, 1)[0];
             fs.unlinkSync(`${this.getPath()}/../words/${group.info.filename}`);
             this.setData(data);
+        }
+    }
+
+    public saveWords = (groupIndex: number): void => {
+        const data = this.getData();
+        if (groupIndex >= 0 && groupIndex < data.length && data[groupIndex].loaded) {
+            const group = data[groupIndex];
+            fs.writeFileSync(`${this.getPath()}/../words/${group.info.filename}`, JSON.stringify(group.words));
+        }
+    }
+
+    public createWord = (word: Word, groupIndex: number) => {
+        let data = this.getData();
+        if (groupIndex >= 0 && groupIndex < data.length) {
+            data[groupIndex].words.push(word);
+            this.setData(data);
+            this.saveWords(groupIndex);
+        }
+    }
+
+    public editWord = (word: Word, groupIndex: number, wordIndex: number) => {
+        let data = this.getData();
+        if (groupIndex >= 0 && groupIndex < data.length) {
+            data[groupIndex].words[wordIndex] = word;
+            this.setData(data);
+            this.saveWords(groupIndex);
+        }
+    }
+
+    public deleteWord = (groupIndex: number, wordIndex: number) => {
+        let data = this.getData();
+        if (groupIndex >= 0 && groupIndex < data.length && wordIndex >= 0 && wordIndex < data[groupIndex].words.length) {
+            data[groupIndex].words.splice(wordIndex, 1);
+            this.setData(data);
+            this.saveWords(groupIndex);
         }
     }
 

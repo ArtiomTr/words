@@ -7,6 +7,8 @@ import { WordTypeComponent } from '../common/WortTypeComponent';
 
 interface Props {
     wordGroup?: WordGroup;
+    createWord: (word: Word) => void;
+    deleteWord: (wordIndex: number) => void;
 }
 
 interface State {
@@ -31,7 +33,7 @@ export default class WordsListPanel extends React.Component<Props, State> {
     }
 
     public render(): React.ReactNode {
-        const { wordGroup } = this.props;
+        const { wordGroup, createWord, deleteWord } = this.props;
         const { isCreatingNewWord } = this.state;
         return (
             <div className="word-list">
@@ -71,13 +73,14 @@ export default class WordsListPanel extends React.Component<Props, State> {
                                         <IconButton style={{ marginRight: 5 }} size="small" edge="end">
                                             <Icon fontSize="small">edit</Icon>
                                         </IconButton>
-                                        <IconButton size="small" edge="end">
+                                        <IconButton onClick={() => deleteWord(index)} size="small" edge="end">
                                             <Icon fontSize="small">delete</Icon>
                                         </IconButton>
                                     </ListItemSecondaryAction>
                                 </ListItem>)}
                         </List>
                         <ActionButton
+                            createWord={createWord}
                             active={isCreatingNewWord}
                             open={this.openWordCreationWindow}
                             close={this.closeWordCreationWindow}

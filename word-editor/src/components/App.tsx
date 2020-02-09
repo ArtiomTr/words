@@ -1,14 +1,14 @@
 import React from 'react'
-import { ThemeProvider, Theme, Dialog, DialogTitle, DialogContent, DialogActions, Button, Typography, IconButton, Icon } from "@material-ui/core"
+import { ThemeProvider, Theme } from "@material-ui/core"
 import ActionPanel from './panels/ActionsPanel';
 import './App.scss'
 import MainContentPanel from './panels/MainContentPanel';
 import { TempDataManager } from '../utils/TempData';
-import { WordGroupDataManager, WordGroupInfo } from '../utils/WordGroup';
+import { WordGroupDataManager, WordGroupInfo, Word } from '../utils/WordGroup';
 import GroupsListPanel from './panels/GroupsListPanel';
 import WordsListPanel from './panels/WordsListPanel';
-import { Form } from 'formik';
-import NewGroupForm from './forms/NewGroupForm';
+import NewGroupPopup from './popups/NewGroupPopup';
+import GroupDeletePopup from './popups/GroupDeletePopup';
 
 interface ActionData {
 
@@ -84,6 +84,18 @@ export default class App extends React.Component<Props, State> {
         this.setState({ selectedWordGroup: -1 });
     }
 
+    private createWord = (word: Word) => {
+        const { wordGroups, selectedWordGroup } = this.state;
+        wordGroups?.createWord(word, selectedWordGroup);
+        this.forceUpdate();
+    }
+
+    private deleteWord = (index: number) => {
+        const { wordGroups, selectedWordGroup } = this.state;
+        wordGroups?.deleteWord(selectedWordGroup, index);
+        this.forceUpdate();
+    }
+
     private getActionByString = (action: string) => {
         switch (action) {
             case "new_group":
@@ -121,82 +133,23 @@ export default class App extends React.Component<Props, State> {
                         />
                         <WordsListPanel
                             wordGroup={wordGroups?.getData()[selectedWordGroup]}
+                            createWord={this.createWord}
+                            deleteWord={this.deleteWord}
                         />
                     </MainContentPanel>
 
-                    <Dialog open={shownPopup === "groupDelete"} onClose={() => this.changePopup("none")}>
-                        <DialogTitle disableTypography className="popup-title">
-                            <Typography variant="h6">Confirm group deletion</Typography>
-                            <IconButton
-                                style={{
-                                    position: "absolute",
-                                    top: 10,
-                                    right: 10
-                                }}
-                                onClick={() => this.changePopup("none")}>
-                                <Icon>
-                                    close
-                                </Icon>
-                            </IconButton>
-                        </DialogTitle>
-                        <DialogContent dividers>
-                            Do you really want to delete "{(popupData && typeof popupData.groupName === "string") ? popupData.groupName : ""}" group?
-                        </DialogContent>
-                        <DialogActions>
-                            <Button color="primary" onClick={() => {
-                                this.changePopup("none")
-                                if (popupData.groupId)
-                                    this.deleteGroup(popupData.groupId);
-                            }}>
-                                ok
-                            </Button>
-                            <Button color="primary" onClick={() => this.changePopup("none")}>
-                                cancel
-                            </Button>
-                        </DialogActions>
-                    </Dialog>
+                    <GroupDeletePopup
+                        isOpened={shownPopup === "groupDelete"}
+                        close={() => this.changePopup("none")}
+                        popupData={popupData}
+                        deleteGroup={this.deleteGroup}
+                    />
 
-                    <Dialog fullWidth maxWidth="xs" open={shownPopup === "groupCreate"} onClose={() => this.changePopup("none")}>
-                        <NewGroupForm
-                            onSubmit={(values: WordGroupInfo) => {
-                                this.createGroup(values);
-                                this.changePopup("none");
-                            }}
-                        >
-                            {(form) =>
-                                <>
-                                    <DialogTitle disableTypography className="popup-title">
-                                        <Typography variant="h6">Create new group</Typography>
-                                        <IconButton
-                                            style={{
-                                                position: "absolute",
-                                                top: 10,
-                                                right: 10
-                                            }}
-                                            type="reset"
-                                            onClick={() => this.changePopup("none")}>
-                                            <Icon>
-                                                close
-                                            </Icon>
-                                        </IconButton>
-                                    </DialogTitle>
-                                    <DialogContent dividers>
-                                        {form}
-                                    </DialogContent>
-                                    <DialogActions>
-                                        <Form>
-                                            <Button color="primary" type="submit">
-                                                ok
-                                            </Button>
-                                        </Form>
-                                        <Button type="reset" color="primary" onClick={() => this.changePopup("none")}>
-                                            cancel
-                                        </Button>
-                                    </DialogActions>
-                                </>
-                            }
-                        </NewGroupForm>
-                    </Dialog>
+                    <NewGroupPopup
+                        isOpened={shownPopup === "groupCreate"}
+                        close={() => this.changePopup("none")}
+                        createGroup={this.createGroup}
+                    />
                 </div>
             </ThemeProvider>
         );

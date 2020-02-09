@@ -3,20 +3,25 @@ import classNames from 'classnames'
 import { IconButton, Icon, Typography } from '@material-ui/core';
 import { Form } from 'formik'
 import WordForm from '../forms/WordForm';
+import { Word } from '../../utils/WordGroup';
 
 interface Props {
     active: boolean;
     open: () => void;
     close: () => void;
+    createWord: (word: Word) => void;
 }
 
 export default class ActionButton extends React.Component<Props> {
 
     public render(): React.ReactNode {
-        const { active, open, close } = this.props;
+        const { active, open, close, createWord } = this.props;
         return (
             <WordForm
-                onSubmit={(values) => console.log(values)}
+                onSubmit={(values) => {
+                    createWord(values);
+                    close();
+                }}
             >
                 {(form, { resetForm }) =>
                     <>
@@ -45,7 +50,7 @@ export default class ActionButton extends React.Component<Props> {
                             >
                                 <Icon>
                                     add
-                        </Icon>
+                                </Icon>
                             </IconButton>
                         </div>
                     </>
