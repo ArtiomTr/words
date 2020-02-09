@@ -1,8 +1,9 @@
 import React from 'react'
-import { Formik, Field, FieldProps, FormikActions } from 'formik';
-import { TextField, FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
+import { Formik, Field, FieldProps, FormikActions, FormikProps } from 'formik';
+import { TextField, FormControl, InputLabel, Select, MenuItem, InputAdornment, CircularProgress } from '@material-ui/core';
 import { typeColorAlias, type2wordAlias, wordTypes } from '../../utils/WordTypes';
 import { Word } from '../../utils/WordGroup';
+import { getAutofillValues } from '../../utils/AutofillUtil'
 import * as yup from 'yup';
 
 interface Props {
@@ -13,16 +14,19 @@ interface Props {
 
 interface State {
     labelWidth: number;
+    loadingAutofill: boolean;
 }
 
 export default class WordForm extends React.Component<Props, State> {
 
     private inputLabelRef: React.RefObject<HTMLLabelElement> = React.createRef();
+    private actions: FormikProps<Word> | null = null;
 
     public constructor(props: Props) {
         super(props);
         this.state = {
-            labelWidth: 0
+            labelWidth: 0,
+            loadingAutofill: false
         }
     }
 
@@ -30,13 +34,42 @@ export default class WordForm extends React.Component<Props, State> {
         this.setState({ labelWidth: this.inputLabelRef.current?.offsetWidth ?? 0 });
     }
 
+    private async pasteAutofillValues(word: string) {
+        this.setState({ loadingAutofill: true });
+        const out = await getAutofillValues(word);
+        this.setState({ loadingAutofill: false });
+        if (out.definition && !this.actions?.values.definition.length)
+            this.actions?.setFieldValue("definition", out.definition);
+        if (out.pronunciation && !this.actions?.values.pronunciation?.length)
+            this.actions?.setFieldValue("pronunciation", out.pronunciation);
+        if (out.type && !this.actions?.values.type.length)
+            this.actions?.setFieldValue("type", out.type);
+    }
+
     private renderForm(): React.ReactNode {
-        const { labelWidth } = this.state;
+        const { labelWidth, loadingAutofill } = this.state;
         return (
             <>
                 <Field name="word">{
                     ({ field, form }: FieldProps) =>
-                        <TextField {...field} error={form.touched[field.name] && form.errors[field.name] !== undefined} label="Word" variant="outlined" fullWidth={true} margin="dense" />
+                        <TextField
+                            {...field}
+                            onBlur={(e: React.FocusEvent) => {
+                                field.onBlur(e);
+                                this.pasteAutofillValues(field.value);
+                            }}
+                            error={form.touched[field.name] && form.errors[field.name] !== undefined}
+                            label="Word"
+                            variant="outlined"
+                            fullWidth={true}
+                            margin="dense"
+                            InputProps={{
+                                endAdornment: loadingAutofill &&
+                                    <InputAdornment position="end">
+                                        <CircularProgress size={18} thickness={4} variant="indeterminate" />
+                                    </InputAdornment>
+                            }}
+                        />
                 }</Field>
                 <Field name="definition">{
                     ({ field, form }: FieldProps) =>
@@ -113,6 +146,7 @@ export default class WordForm extends React.Component<Props, State> {
                 }}
             >
                 {(actions) => {
+                    this.actions = actions;
                     return children ? children(this.renderForm(), actions) : this.renderForm()
                 }}
             </Formik>
