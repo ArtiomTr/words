@@ -1,5 +1,14 @@
-import React from 'react'
-import { Dialog, DialogTitle, Typography, IconButton, Icon, DialogContent, DialogActions, Button } from '@material-ui/core';
+import React from 'react';
+import {
+    Dialog,
+    DialogTitle,
+    Typography,
+    IconButton,
+    Icon,
+    DialogContent,
+    DialogActions,
+    Button,
+} from '@material-ui/core';
 
 interface Props {
     isOpened: boolean;
@@ -9,7 +18,6 @@ interface Props {
 }
 
 export default class GroupDeletePopup extends React.Component<Props> {
-
     public render(): React.ReactNode {
         const { isOpened, close, popupData, deleteGroup } = this.props;
         return (
@@ -18,25 +26,34 @@ export default class GroupDeletePopup extends React.Component<Props> {
                     <Typography variant="h6">Confirm group deletion</Typography>
                     <IconButton
                         style={{
-                            position: "absolute",
+                            position: 'absolute',
                             top: 10,
-                            right: 10
+                            right: 10,
                         }}
-                        onClick={close}>
-                        <Icon>
-                            close
-                        </Icon>
+                        onClick={close}
+                    >
+                        <Icon>close</Icon>
                     </IconButton>
                 </DialogTitle>
                 <DialogContent dividers>
-                    Do you really want to delete "{(popupData && typeof popupData.groupName === "string") ? popupData.groupName : ""}" group?
+                    Do you really want to delete "
+                    {popupData && typeof popupData.groupName === 'string'
+                        ? popupData.groupName
+                        : ''}
+                    " group?
                 </DialogContent>
                 <DialogActions>
-                    <Button color="primary" onClick={() => {
-                        close();
-                        if (popupData.groupId)
-                            deleteGroup(popupData.groupId);
-                    }}>
+                    <Button
+                        color="primary"
+                        onClick={() => {
+                            close();
+                            if (
+                                popupData.groupId !== null &&
+                                popupData.groupId !== undefined
+                            )
+                                deleteGroup(popupData.groupId);
+                        }}
+                    >
                         ok
                     </Button>
                     <Button color="primary" onClick={close}>
@@ -46,5 +63,4 @@ export default class GroupDeletePopup extends React.Component<Props> {
             </Dialog>
         );
     }
-
 }
